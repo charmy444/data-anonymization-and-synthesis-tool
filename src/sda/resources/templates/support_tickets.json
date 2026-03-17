@@ -5,7 +5,7 @@
     {"name": "ticket_id", "provider": "uuid4"},
     {"name": "user_id", "provider": "context_ref", "ref": "user_id"},
     {"name": "issue", "provider": "sentence"},
-    {"name": "created_at", "provider": "date_time_this_year"},
+    {"name": "created_at", "provider": "date_time_between"},
     {
       "name": "status", 
       "provider": "random_element", 
