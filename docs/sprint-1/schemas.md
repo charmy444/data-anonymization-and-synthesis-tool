@@ -15,7 +15,7 @@
 - `mask`
 - `redact`
 - `pseudonymize`
-- `generalize_date`
+- `generalize_year`
 
 ### Лимиты
 
