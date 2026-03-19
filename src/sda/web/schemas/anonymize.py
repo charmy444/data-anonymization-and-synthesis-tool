@@ -15,7 +15,7 @@ class AnonymizationMethod(str, Enum):
     MASK = "mask"
     REDACT = "redact"
     PSEUDONYMIZE = "pseudonymize"
-    GENERALIZE_DATE = "generalize_year"
+    GENERALIZE_YEAR = "generalize_year"
 
 
 def _normalize_column_name(value: str) -> str:
