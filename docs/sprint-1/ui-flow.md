@@ -100,7 +100,7 @@
     - mask
     - redact
     - pseudonymize
-    - generalize_date
+    - generalize_year
 - Кнопки действий:
   - загрузить другой файл
   - запуск и скачивание (`Anonymize and download`)
