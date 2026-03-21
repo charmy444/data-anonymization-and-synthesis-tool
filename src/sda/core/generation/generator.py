@@ -56,6 +56,37 @@ class DataGenerator:
 
         return rows
 
+    def reset_context(self) -> None:
+        """Сбросить in-memory контекст между сессиями генерации."""
+        for key in self.context:
+            self.context[key] = []
+
+    def generate_tables(self, items: list[dict[str, int]]) -> dict[str, list[dict[str, object]]]:
+        """Сгенерировать несколько таблиц в порядке элементов запроса.
+
+        Каждый элемент должен содержать:
+        - template_id: str
+        - row_count: int
+        """
+        if not items:
+            raise GenerationError("Список элементов генерации не может быть пустым.")
+
+        self.reset_context()
+        result: dict[str, list[dict[str, object]]] = {}
+
+        for item in items:
+            template_id = item.get("template_id")
+            row_count = item.get("row_count")
+
+            if not isinstance(template_id, str) or not template_id:
+                raise GenerationError("Каждый элемент должен содержать непустой template_id.")
+            if not isinstance(row_count, int):
+                raise GenerationError(f"row_count для '{template_id}' должен быть целым числом.")
+
+            result[template_id] = self.generate_table(template_id=template_id, count=row_count)
+
+        return result
+
     def _generate_row(self, template_id: str, template: dict) -> dict[str, object]:
         # Специальный случай: для payments нужно согласовать order_id и user_id
         if template_id == "payments":
