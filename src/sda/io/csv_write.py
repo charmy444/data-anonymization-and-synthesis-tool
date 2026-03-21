@@ -12,13 +12,13 @@ def write_csv_bytes(
     delimiter: str = ",",
     fieldnames: Sequence[str] | None = None,
 ) -> bytes:
-    """Serialize rows to UTF-8 CSV bytes."""
+    """Сериализовать строки в CSV-байты UTF-8."""
     if delimiter not in {",", ";"}:
-        raise GenerationError("Unsupported delimiter. Expected ',' or ';'.")
+        raise GenerationError("Неподдерживаемый delimiter. Ожидались ',' или ';'.")
 
     if fieldnames is None:
         if not rows:
-            raise GenerationError("Cannot infer CSV header from empty rows.")
+            raise GenerationError("Невозможно определить заголовок CSV для пустых строк.")
         fieldnames = list(rows[0].keys())
 
     stream = io.StringIO(newline="")

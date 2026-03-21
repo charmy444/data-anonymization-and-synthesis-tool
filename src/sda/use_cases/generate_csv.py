@@ -22,25 +22,24 @@ def generate_csv_use_case(
     delimiter: str = ",",
     generator: DataGenerator | None = None,
 ) -> dict[str, Any]:
-    """
-    Application-level generate use case.
+    """Use case генерации CSV на уровне приложения.
 
-    Input example:
+    Пример входа:
     [
       {"template_id": "users", "row_count": 100},
       {"template_id": "orders", "row_count": 100}
     ]
 
-    Returned structure is ready for web/routers/generate.py serialization.
+    Возвращаемая структура готова для сериализации в `web/routers/generate.py`.
     """
     if not items:
-        raise GenerationError("At least one generation item is required.")
+        raise GenerationError("Нужно передать хотя бы один элемент генерации.")
 
     seen: set[str] = set()
     for item in items:
         template_id = item.get("template_id")
         if template_id in seen:
-            raise GenerationError(f"Duplicate template_id in request: '{template_id}'")
+            raise GenerationError(f"Повторяющийся template_id в запросе: '{template_id}'")
         seen.add(template_id)
 
     data_generator = generator or DataGenerator()
