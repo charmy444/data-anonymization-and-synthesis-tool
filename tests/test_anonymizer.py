@@ -3,7 +3,7 @@ from sda.core.anonymization.anonymizer import CsvAnonymizer
 from sda.core.domain.errors import InvalidRuleError, UnknownColumnError
 
 def test_anonymize_rows_stable_pseudonymization():
-    """Проверка T016: одинаковый вход -> одинаковый выход (Stable Seed)."""
+    """Проверка: одинаковый вход -> одинаковый выход (Stable Seed)."""
     anonymizer = CsvAnonymizer()
     rows = [
         {"user": "Artem", "email": "artem@example.com"},
@@ -22,7 +22,7 @@ def test_anonymize_rows_stable_pseudonymization():
     assert "@" in result[0]["email"]
 
 def test_heuristics_detection():
-    """Проверка T016: эвристики Faker (распознавание типов)."""
+    """Проверка: эвристики Faker (распознавание типов)."""
     anonymizer = CsvAnonymizer()
     
     assert anonymizer._detect_pseudonym_strategy(column_name="user_email", value="test@test.com") == "email"
