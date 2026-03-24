@@ -29,7 +29,7 @@ def test_generate_table_invalid_count() -> None:
 
 
 def test_auto_increment_provider() -> None:
-    """Проверка нового провайдера auto_increment (T013)."""
+    """Проверка провайдера auto_increment."""
     generator = DataGenerator()
     col = {"name": "id", "provider": "auto_increment"}
     
@@ -45,7 +45,7 @@ def test_auto_increment_provider() -> None:
 
 
 def test_core_faker_providers() -> None:
-    """Проверка базовых провайдеров из ТЗ T013."""
+    """Проверка базовых провайдеров."""
     generator = DataGenerator()
 
     val_uuid = generator._generate_column_value("test", {"name": "u", "provider": "uuid4"})
@@ -71,7 +71,7 @@ def test_core_faker_providers() -> None:
 
 
 def test_generic_faker_fallback() -> None:
-    """Проверка вызова любого метода Faker без параметров (T013)."""
+    """Проверка вызова любого метода Faker без параметров."""
     generator = DataGenerator()
 
     val_word = generator._generate_column_value("test", {"name": "w", "provider": "word"})
