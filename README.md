@@ -109,7 +109,3 @@ npm run build
 - `POST /api/v1/anonymize/run`
 - `POST /api/v1/similar/analyze`
 - `POST /api/v1/similar/run`
-
-## Замечание по текущему состоянию
-
-Встроенный UI из backend убран. Backend теперь работает как отдельный API-сервис, а весь пользовательский интерфейс находится в `frontend/`.

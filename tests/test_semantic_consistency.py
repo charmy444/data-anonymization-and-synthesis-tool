@@ -45,7 +45,7 @@ def test_generate_semantics_keep_order_dates_after_registration_and_ticket_const
         assert datetime.fromisoformat(row["created_at"]) >= registration_by_user[row["user_id"]]
 
 
-def test_generate_semantics_keep_city_and_address_consistent_and_reduce_very_old_birth_dates() -> None:
+def test_generate_semantics_keep_city_separate_from_address_and_reduce_very_old_birth_dates() -> None:
     result = generate_csv_use_case(
         [
             {"template_id": "users", "row_count": 400},
@@ -56,7 +56,8 @@ def test_generate_semantics_keep_city_and_address_consistent_and_reduce_very_old
     users = _decode_generated_rows(result, "users")
 
     for row in users:
-        assert row["city"] in row["address"]
+        assert row["address"]
+        assert row["city"] not in row["address"]
 
     city_counts = Counter(row["city"] for row in users)
     assert len(city_counts) >= 12
