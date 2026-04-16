@@ -1,46 +1,69 @@
 # SDA (Synthetic Data Generator & Anonymizer)
 
-Инструмент для генерации синтетических CSV и анонимизации CSV без использования реальных персональных данных.
+Инструмент для:
 
-## Что сейчас готово
+- генерации синтетических CSV по шаблонам,
+- анонимизации произвольных CSV,
+- создания похожих synthetic datasets через SDV.
 
-- `GET /`, `GET /generate`, `GET /anonymize` - рабочие web-экраны.
-- `GET /similar` - заглушка без реального backend-сценария.
-- `GET /api/v1/health` - healthcheck.
-- `GET /api/v1/generate/templates`
-- `GET /api/v1/generate/templates/{template_id}`
-- `POST /api/v1/generate/run`
-- `POST /api/v1/anonymize/upload`
-- `POST /api/v1/anonymize/run`
+Теперь проект разделён на 2 сервиса:
 
-## Запуск через Docker
+- `backend` на `FastAPI` с API `generate / anonymize / similar`
+- `frontend` на `Next.js + TypeScript` с отдельным UI
 
-Сборка образа:
+## Что сейчас реализовано
 
-```bash
-docker build -t sda .
+- `Generate`: генерация `users`, `orders`, `payments`, `products`, `support_tickets`
+- `Anonymize`: upload CSV, detected types, suggested rules, ручная корректировка правил, download результата
+- `Similar`: analyze -> fit -> sample через SDV, preview, summary, warnings, download результата
+- semantic postprocess для `generate` и `similar`
+- detector и suggester для анонимизации
+
+## Структура
+
+```text
+src/                 FastAPI backend
+frontend/            Next.js frontend
+dockerfiles/         container build files
+compose.yaml         запуск двух сервисов
+dockerfiles/backend.Dockerfile
+dockerfiles/frontend.Dockerfile
 ```
 
-Запуск контейнера:
+## Запуск через Docker Compose
+
+Собрать и поднять оба сервиса:
 
 ```bash
-docker run --rm -d -p 8000:8000 --name sda-app sda
+docker compose up --build
 ```
 
-После старта открой:
+Backend image заранее ставит CPU-only `torch` из официального индекса PyTorch, поэтому при сборке не должны подтягиваться тяжёлые `nvidia_*` / CUDA-пакеты.
 
-- `http://127.0.0.1:8000/` - главная
-- `http://127.0.0.1:8000/generate` - UI генерации
-- `http://127.0.0.1:8000/anonymize` - UI анонимизации
-- `http://127.0.0.1:8000/docs` - Swagger UI
+После старта:
 
-Остановить контейнер:
+- `http://127.0.0.1:3000/` - новый frontend
+- `http://127.0.0.1:3000/generate`
+- `http://127.0.0.1:3000/anonymize`
+- `http://127.0.0.1:3000/similar`
+- `http://127.0.0.1:8000/docs` - Swagger UI backend
+- `http://127.0.0.1:8000/api/v1/health` - healthcheck
+
+Остановить:
 
 ```bash
-docker stop sda-app
+docker compose down
+```
+
+Если прерванная сборка оставила лишний build cache, его можно почистить так:
+
+```bash
+docker builder prune -f
 ```
 
 ## Локальный запуск без Docker
+
+### Backend
 
 ```bash
 python3 -m venv .venv
@@ -49,16 +72,44 @@ python -m pip install -r requirements.txt
 uvicorn --app-dir src sda.web.app:app --reload
 ```
 
-## Разработка и тесты
+По умолчанию backend будет доступен на `http://127.0.0.1:8000`.
 
-Установка dev-зависимостей:
-
-```bash
-python -m pip install -r requirements-dev.txt
-```
-
-Запуск тестов:
+### Frontend
 
 ```bash
-python -m pytest -q
+cd frontend
+npm install
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1 npm run dev
 ```
+
+Frontend будет доступен на `http://127.0.0.1:3000`.
+
+## Тесты и сборка
+
+### Backend tests
+
+```bash
+./.venv/bin/python -m pytest -q
+```
+
+### Frontend production build
+
+```bash
+cd frontend
+npm run build
+```
+
+## Основные backend endpoint'ы
+
+- `GET /api/v1/health`
+- `GET /api/v1/generate/templates`
+- `GET /api/v1/generate/templates/{template_id}`
+- `POST /api/v1/generate/run`
+- `POST /api/v1/anonymize/upload`
+- `POST /api/v1/anonymize/run`
+- `POST /api/v1/similar/analyze`
+- `POST /api/v1/similar/run`
+
+## Замечание по текущему состоянию
+
+Встроенный UI из backend убран. Backend теперь работает как отдельный API-сервис, а весь пользовательский интерфейс находится в `frontend/`.
