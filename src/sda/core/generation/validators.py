@@ -399,18 +399,18 @@ def _build_address_for_city(city: str, *, locale: str, seeded_random: Random) ->
         building = f", корп. {seeded_random.randint(1, 8)}" if seeded_random.random() < 0.18 else ""
         apartment = f", кв. {seeded_random.randint(1, 400)}" if seeded_random.random() < 0.72 else ""
         patterns = [
-            f"г. {city}, {street_type} {street_name}, д. {house}{building}{apartment}",
-            f"г. {city}, {district} район, {street_type} {street_name}, д. {house}{building}{apartment}",
-            f"{city}, {street_type} {street_name}, влад. {house}{building}{apartment}",
+            f"{street_type} {street_name}, д. {house}{building}{apartment}",
+            f"{district} район, {street_type} {street_name}, д. {house}{building}{apartment}",
+            f"{street_type} {street_name}, влад. {house}{building}{apartment}",
         ]
         return seeded_random.choice(patterns)
 
     district = seeded_random.choice(districts)
     suite = f", Apt {seeded_random.randint(1, 999)}" if seeded_random.random() < 0.55 else ""
     patterns = [
-        f"{house} {street_name} {street_type}, {city}{suite}",
-        f"{house} {street_name} {street_type}, {district}, {city}{suite}",
-        f"{house} {street_name} {street_type}, Unit {seeded_random.randint(1, 80)}, {city}",
+        f"{house} {street_name} {street_type}{suite}",
+        f"{house} {street_name} {street_type}, {district}{suite}",
+        f"{house} {street_name} {street_type}, Unit {seeded_random.randint(1, 80)}",
     ]
     return seeded_random.choice(patterns)
 
