@@ -1888,6 +1888,7 @@ html[lang="ru"] .knowledge-section__header h2 {
   width: 100%;
   margin-bottom: 28px;
   text-align: left;
+  gap: 22px;
 }
 
 .tool-toolbar__group {
@@ -1910,6 +1911,54 @@ html[lang="ru"] .knowledge-section__header h2 {
 .tool-toolbar--stack .segmented-control__button {
   min-width: 126px;
   padding: 12px 20px;
+}
+
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.domain-option {
+  min-height: 132px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  text-align: left;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.domain-option:hover {
+  transform: translateY(-1px);
+  border-color: rgba(118, 225, 255, 0.22);
+}
+
+.domain-option.is-active {
+  border-color: rgba(118, 225, 255, 0.42);
+  background: rgba(118, 225, 255, 0.1);
+}
+
+.domain-option strong,
+.domain-option span {
+  display: block;
+}
+
+.domain-option strong {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.domain-option span {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .segmented-control {
@@ -2445,6 +2494,10 @@ html[lang="ru"] .knowledge-section__header h2 {
   .tool-toolbar--stack .segmented-control__button {
     min-width: 0;
     flex: 1 1 0;
+  }
+
+  .domain-grid {
+    grid-template-columns: 1fr;
   }
 
   .row-stepper {
