@@ -11,6 +11,7 @@ from sda.web.routers.anonymize import router as anonymize_router
 from sda.web.routers.generate import router as generate_router
 from sda.web.routers.health import router as health_router
 from sda.web.routers.similar import router as similar_router
+from sda.web.observability import setup_observability
 from sda.web.schemas.generate import ErrorResponse
 
 API_PREFIX = "/api/v1"
@@ -50,6 +51,7 @@ def create_app() -> FastAPI:
     app.include_router(generate_router, prefix=API_PREFIX)
     app.include_router(anonymize_router, prefix=API_PREFIX)
     app.include_router(similar_router, prefix=API_PREFIX)
+    setup_observability(app)
 
     @app.exception_handler(SdaError)
     async def handle_sda_error(_, exc: SdaError) -> JSONResponse:
